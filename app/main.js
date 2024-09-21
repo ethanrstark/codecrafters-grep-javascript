@@ -17,6 +17,9 @@ function matchPattern(inputLine, pattern) {
   } else if (pattern.startsWith("[") && pattern.endsWith("]")) {
     const chars = pattern.slice(1, -1).split("");
     return splitLine.some((char) => chars.includes(char));
+  } else if (pattern.startsWith("[") && pattern.endsWith("]") && pattern[1] === "^") {
+    const chars = pattern.slice(2, -1).split("");
+    return splitLine.every((char) => !chars.includes(char));
   } else {
     throw new Error(`Unhandled pattern ${pattern}`);
   }
