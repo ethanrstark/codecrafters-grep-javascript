@@ -20,7 +20,7 @@ function matchPattern(inputLine, pattern) {
     const chars = pattern.slice(1, -1).split("");
     return splitLine.some((char) => chars.includes(char));
 
-  } else if (pattern.startsWith("[") && pattern.endsWith("]") && pattern[1] === "^") {
+  } else if (pattern.startsWith("[") && pattern.endsWith("]") && pattern.charAt(1) === "^") {
     const chars = pattern.slice(2, -1).split("");
     return splitLine.some((char) => !chars.includes(char));
 
