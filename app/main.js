@@ -7,6 +7,7 @@ function matchPattern(inputLine, pattern) {
 
   if (pattern === "\\d") {
     return splitLine.some((char) => !isNaN(char));
+
   } else if (pattern === "\\w") {
     return splitLine.some((char) => {
       const code = char.charCodeAt(0);
@@ -14,12 +15,15 @@ function matchPattern(inputLine, pattern) {
       // git Digits (0-9): U+0030 to U+0039, Underscore (_): U+005F
       return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57) || code === 95;
     });
+
   } else if (pattern.startsWith("[") && pattern.endsWith("]")) {
     const chars = pattern.slice(1, -1).split("");
     return splitLine.some((char) => chars.includes(char));
+
   } else if (pattern.startsWith("[") && pattern.endsWith("]") && pattern[1] === "^") {
     const chars = pattern.slice(2, -1).split("");
-    return splitLine.every((char) => !chars.includes(char));
+    return splitLine.some((char) => !chars.includes(char));
+
   } else {
     throw new Error(`Unhandled pattern ${pattern}`);
   }
