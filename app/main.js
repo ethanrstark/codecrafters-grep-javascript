@@ -1,10 +1,19 @@
 function matchPattern(inputLine, pattern) {
   if (pattern.length === 1) {
     return inputLine.includes(pattern);
-  } else if (pattern === "\\d") {
-    return /\d/.test(inputLine);
+  }
+
+  splitLine = inputLine.split("");
+
+  if (pattern === "\\d") {
+    return splitLine.some((char) => !isNaN(char));
   } else if (pattern === "\\w") {
-    return /\w/.test(inputLine);
+    return splitLine.some((char) => {
+      const code = char.charCodeAt(0);
+      // Uppercase Letters (A-Z): U+0041 to U+005A, Lowercase Letters (a-z): U+0061 to U+007A, 
+      // Digits (0-9): U+0030 to U+0039, Underscore (_): U+005F
+      return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57) || code === 95;
+    });
   } else {
     throw new Error(`Unhandled pattern ${pattern}`);
   }
