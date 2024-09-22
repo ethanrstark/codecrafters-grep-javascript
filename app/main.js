@@ -12,17 +12,18 @@ function matchPattern(inputLine, pattern) {
     return splitLine.some((char) => {
       const code = char.charCodeAt(0);
       // Uppercase Letters (A-Z): U+0041 to U+005A, Lowercase Letters (a-z): U+0061 to U+007A, 
-      // git Digits (0-9): U+0030 to U+0039, Underscore (_): U+005F
+      // Digits (0-9): U+0030 to U+0039, Underscore (_): U+005F
       return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57) || code === 95;
     });
 
   } else if (pattern.startsWith("[") && pattern.endsWith("]")) {
+    if (pattern[1] === "^") {
+      const chars = pattern.slice(2, -1).split("");
+      return splitLine.some((char) => !chars.includes(char));
+    }
+
     const chars = pattern.slice(1, -1).split("");
     return splitLine.some((char) => chars.includes(char));
-
-  } else if (pattern.startsWith("[") && pattern.endsWith("]") && pattern.charAt(1) === "^") {
-    const chars = pattern.slice(2, -1).split("");
-    return splitLine.some((char) => !chars.includes(char));
 
   } else {
     throw new Error(`Unhandled pattern ${pattern}`);
